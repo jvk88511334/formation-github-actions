@@ -46,11 +46,15 @@ jobs:
           ./sysinfo
   C-release:
     if: github.ref_type == 'tag'
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-latest
     needs: C-compilation
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: mon-artifact
       - name: Release
         uses: softprops/action-gh-release@v3
+

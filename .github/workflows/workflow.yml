@@ -8,6 +8,6 @@ jobs:
       - name: information sur la machine
         run: hostnamectl
       - name: adressage ipv4
-        run: ip a -4
+        run: ip -4 a
       - name: mon identité de connexion
         run: who am i

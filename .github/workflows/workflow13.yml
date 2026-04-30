@@ -1,0 +1,34 @@
+name: TP13-publication-de-pages
+
+on: push
+
+jobs:
+  deploy-pages:
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: documentation generation
+        run: |
+          pip install -r requirements.txt
+          mkdocs build # genere répertoire site/
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload documentation to Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: 'site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

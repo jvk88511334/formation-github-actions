@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - run: make build
-  build-python:
+  check-python:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Project
@@ -28,7 +28,7 @@ jobs:
         run: pylint --disable=missing-docstring script/mysystem/mysystem.py
   test-python:
     runs-on: ubuntu-latest
-    needs: build-python
+    needs: check-python
     steps:
       - name: Setup Project
         uses: actions/checkout@v6

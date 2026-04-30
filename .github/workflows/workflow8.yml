@@ -1,4 +1,4 @@
-name: TP06-jobs-et-dependances
+name: TP-08
 on: push
 
 jobs:

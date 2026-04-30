@@ -1,0 +1,13 @@
+name: workflow.yml
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: information sur la machine
+        run: hostnamectl
+      - name: adressage ipv4
+        run: ip a -4
+      - name: mon identité de connexion
+        run: who am i

@@ -37,7 +37,7 @@ jobs:
     permissions:
       actions: read
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: mon-artifact
       - name: execution binaire

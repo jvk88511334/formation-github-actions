@@ -38,4 +38,6 @@ jobs:
         with:
           name: mon-artifact
       - name: execution binaire
-        run: ./sysinfo
+        run: |
+          chmod +x sysinfo
+          ./sysinfo

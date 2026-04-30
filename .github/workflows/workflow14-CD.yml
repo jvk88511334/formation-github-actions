@@ -1,0 +1,23 @@
+name: TP10-enchainer-les-workflows-CI
+on:
+  workflow_run:
+    workflows: [ "TP10-enchainer-les-workflows-CI" ]
+    types:
+      - completed
+
+jobs:
+
+  C-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sysinfo download artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: sysinfo-${{ github.sha }}
+      - uses: actions/checkout@v6
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+

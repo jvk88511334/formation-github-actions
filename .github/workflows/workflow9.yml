@@ -1,0 +1,56 @@
+name: TP-09
+on:
+  push:
+    branches:
+      - feature/*
+    tags:
+      - v*.*.*
+jobs:
+
+  C-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: sysinfo lint
+        run: make lint
+
+  C-compilation:
+    runs-on: ubuntu-latest
+    needs: C-lint
+    permissions:
+      actions: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: sysinfo compilation
+        run: make build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: mon-artifact
+          path: bin/sysinfo
+
+  C-execution:
+    runs-on: ubuntu-latest
+    needs: C-compilation
+    permissions:
+      actions: read
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: mon-artifact
+      - name: execution binaire
+        run: |
+          chmod +x sysinfo
+          ./sysinfo
+  C-release:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    needs: C-compilation
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: mon-artifact
+      - name: Release
+        uses: softprops/action-gh-release@v3

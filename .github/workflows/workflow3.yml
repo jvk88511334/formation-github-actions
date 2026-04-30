@@ -2,12 +2,18 @@ name: workflow3.yml
 on: push
 
 jobs:
-  build:
+  check-c:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - run: make lint
+  build-c:
+    runs-on: ubuntu-latest
+    needs: check-c
+    steps:
+      - uses: actions/checkout@v6
       - run: make build
-  check:
+  build-python:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Project
@@ -20,3 +26,16 @@ jobs:
         run: pip install ifaddr psutil pylint
       - name: Exécution du test
         run: pylint --disable=missing-docstring script/mysystem/mysystem.py
+  test-python:
+    runs-on: ubuntu-latest
+    needs: build-python
+    steps:
+      - name: Setup Project
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installation des dépendances
+        run: pip install ifaddr psutil pylint
+      - run: python script/mysystem/mysystem.py

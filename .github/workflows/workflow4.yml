@@ -1,0 +1,34 @@
+name: workflow4.yml
+on: push
+
+env:
+  GLOBAL_VAR: GLOBAL_VAR
+
+jobs:
+  job1:
+    env:
+      JOB_VAR: JOB_VAR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Affichage des variables
+        env:
+          STEP_VAR: STEP_VAR
+        run: | 
+          echo $STEP_VAR
+          echo $GLOBAL_VAR
+          echo $JOB_VAR
+      - name: Variables GitHub
+        run: |
+          echo ${{ github.ref_name }}
+          echo ${{ github.sha }}
+          echo ${{ github.actor }}
+          echo ${{ github.event_name }}
+      - name: OS et Architecture
+        run: |
+          echo ${{ runner.os }}
+          echo ${{ runner.arch }}
+      - name: Secrets
+        run: |
+          echo ${{ secrets.DOCKERHUB_USERNAME }}
+          
+          
